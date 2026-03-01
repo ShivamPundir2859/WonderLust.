@@ -1,10 +1,15 @@
 <% layout("/layout/boilerplate") %>
 
 <body>
-    <h2> All listings</h2>
-    <!-- <form method="GET" action="/listing/new">
-        <button> Create New Listing</button>
-    </form> -->
+<h2> All listings</h2>
+<% for(let listing of allListings){ %>
+    <div class="card" style="width: 18rem;">
+        <img src="<%= listing.image%>" class="card-img-top" alt="...">
+    <div class="card-body">
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card’s content.</p>
+    </div>
+<% }; %>
+</div>
     <ul>
         <% for(let listing of allListings){ %>
             <li> <a href="/listing/<%= listing._id%>"><%= listing.title%></a> </li>
