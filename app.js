@@ -6,7 +6,10 @@ const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const wrapAsync = require("./utils/wrapAsync.js");
-const ExpressError = require("./utils/ExpressError.js")
+const ExpressError = require("./utils/ExpressError.js");
+const { listingSchema } = require("./schema.js");
+
+
 
 
 main().then(() => {
@@ -30,6 +33,16 @@ app.get("/", (req, res) => {
     res.send("heyy its working..")
 });
 
+const validateListing = (req,res,next)=>{
+    let {error}= listingSchema.validate(req.body);
+    if(error){
+        let errMsg = error.details.ap((el)=> el.message).join(",");
+        throw new ExpressError(400, error);
+    }else{
+        next();
+    }
+}
+
 //Index route
 app.get("/listings", wrapAsync(async (req, res) => {
     const allListings = await Listing.find();
@@ -49,14 +62,13 @@ app.get("/listing/:id", wrapAsync(async (req, res) => {
 }));
 
 //Create route for upper new route
-app.post("/listings", wrapAsync(async (req, res, next) => {
-    if(!req.body.listing){
-        throw new ExpressError(400, "Send valid data for listing!")
-    }
+app.post("/listings", validateListing, wrapAsync(async (req, res, next) => {
+
     const newListing = new Listing(req.body.listing);
     await newListing.save();
     res.redirect("/listings");
-}));
+})
+);
 
 //Edit listing
 app.get("/listings/:id/edit", wrapAsync(async (req, res) => {
@@ -66,7 +78,7 @@ app.get("/listings/:id/edit", wrapAsync(async (req, res) => {
 }));
 
 //Update route for upper one
-app.put("/listing/:id", wrapAsync(async (req, res) => {
+app.put("/listing/:id", validateListing, wrapAsync(async (req, res) => {
     let { id } = req.params;
     await Listing.findByIdAndUpdate(id, { ...req.body.listing });
     res.redirect(`/listing/${id}`);
@@ -79,15 +91,15 @@ app.delete("/listing/:id", async (req, res) => {
     res.redirect("/listings");
 });
 
-app.use((req,res,next)=>{
+app.use((req, res, next) => {
     next(new ExpressError(404, "Page not found"));
 });
 
 
 app.use((err, req, res, next) => {
-    let {statuscode=500, message="something went wrong"} = err;
+    let { statuscode = 500, message = "something went wrong" } = err;
     // res.status(statuscode).send(message);
-    res.status(statuscode).render("Error.ejs", {message})
+    res.status(statuscode).render("Error.ejs", { message })
 });
 
 app.listen(8080, () => {
