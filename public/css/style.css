@@ -1,4 +1,9 @@
-.body{
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
     font-family: "Plus Jakarta Sans", sans-serif !important;
     font-optical-sizing: auto;
     font-weight: weight;

@@ -22,7 +22,7 @@
 
 		<div class="btns">
 			<a href="/listings/<%=listing._id%>/edit" class="btn btn-dark col-1 offset-3 edit-btn">Edit</a>
-			<form method="POST" action="/listing/<%=listing._id%>?_method=Delete">
+			<form method="POST" action="/listings/<%=listing._id%>?_method=Delete">
 				<button class="btn btn-dark offset-5">Delete</button>
 			</form>
 		</div>
@@ -31,17 +31,25 @@
 
 		<div class="col-8 offset-3 md-3 ">
 			<h4>Leave Rating here!!</h4>
-			<form>
+			<form action="/listings/<%=listing._id%>/reviews" method="post" novalidate class="needs-validation">
 				<div class="md-3 mt-3">
-					<label for="Rating" class="form-label">Rating</label>
-					<input type="range" min="1" max="5" id="rating" name="review[rating]" >
+					<label for="rating" class="form-label">Rating</label>
+					<input type="range" min="1" max="5" id="rating" name="review[rating]" class="form-range" >
 				</div>
 				<div class="md-3 mt-3">
 					<label for="comment" class="form-label">comment</label>
-					<textarea name="review[comment]" id="comment" cols="30" rows="10" class="form-control"></textarea>
+					<textarea name="review[comment]" id="comment" cols="30" rows="10" class="form-control" required></textarea>
+					<div class="invalid-feedback">Please enter some review</div>
 				</div>
-				<button class="btn btn-outline-dark">Submit</button>
+				<button class="btn btn-outline-dark md-3 mt-3">Submit</button>
 			</form>
-		</div>
 
+			<hr/>
+			<h4>All Reviews</h4>
+			<ul>
+			<%for(review of listing.reviews){%>
+				<li><%=review.comment%>,<%=review.rating%></li>
+			<%}%>
+			</ul>
+		</div>
 	</div>
