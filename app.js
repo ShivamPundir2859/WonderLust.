@@ -1,15 +1,16 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-const Listing = require("./models/listing.js");
 const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
-const wrapAsync = require("./utils/wrapAsync.js");
 const ExpressError = require("./utils/ExpressError.js");
-const { listingSchema, reviewSchema } = require("./schema.js");
-const Review = require("./models/review.js");
-const listing = require("./routes/listing.js")
+const session = require("express-session");
+const flash = require("connect-flash");
+
+
+const listing = require("./routes/listing.js");
+const reviews = require("./routes/review.js")
 
 main().then(() => {
     console.log("Connected to DB");
@@ -28,24 +29,34 @@ app.use(methodOverride("_method"));
 app.engine('ejs', ejsMate);
 app.use(express.static(path.join(__dirname, "/public")));
 
+const sessionOptions = {
+    secret: "my supersecretcode",
+    resave: false,
+    saveUninitialized: true,
+    cookies: {
+        expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+        httpOnly: true,
+    },
+}
+
+
 app.get("/", (req, res) => {
     res.send("heyy its working..")
 });
 
 
+app.use(session(sessionOptions));
+app.use(flash());
 
-const validateReview = (req, res, next) => {       //joi validation(client side for Review)
-    let { error } = reviewSchema.validate(req.body);
-    if (error) {
-        let errMsg = error.details.map((el) => el.message).join(",");
-        throw new ExpressError(400, errMsg);
-    } else {
-        next();
-    }
-}
-
+app.use((req, res, next) => {
+    res.locals.success = req.flash("success");
+    res.locals.error = req.flash("error");
+    next();
+})
 
 app.use("/listings", listing);
+app.use("/listings/:id/reviews", reviews)
 
 
 app.use((req, res, next) => {
