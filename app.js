@@ -12,8 +12,9 @@ const LocalStrategy = require("passport-local");
 const User = require("./models/user.js")
 
 
-const listing = require("./routes/listing.js");
-const reviews = require("./routes/review.js")
+const listingRouter = require("./routes/listing.js");
+const reviewsRouter = require("./routes/review.js");
+const userRouter = require("./routes/user.js");
 
 main().then(() => {
     console.log("Connected to DB");
@@ -66,17 +67,18 @@ app.use((req, res, next) => {
     next();
 })
 
-app.get("/demouser", async (req, res) => {
-    let fakeUser = new User({
-        email: "shivam@gmail.com",
-        username: "shivam123@",
-    })
-    let registeredUser = await User.register(fakeUser, "helloworld");
-    res.send(registeredUser);
-});
+// app.get("/demouser", async (req, res) => {
+//     let fakeUser = new User({
+//         email: "shivam@gmail.com",
+//         username: "shivam123@",
+//     })
+//     let registeredUser = await User.register(fakeUser, "helloworld");
+//     res.send(registeredUser);
+// });
 
-app.use("/listings", listing);
-app.use("/listings/:id/reviews", reviews)
+app.use("/listings", listingRouter);
+app.use("/listings/:id/reviews", reviewsRouter);
+app.use("/", userRouter);
 
 
 app.use((req, res, next) => {
@@ -92,6 +94,9 @@ app.use((err, req, res, next) => {
 app.listen(8080, () => {
     console.log("app is listening...")
 });
+
+
+
 
 
 
