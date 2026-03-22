@@ -7,7 +7,7 @@ const listingSchema = new Schema({
         type: String,
         required: true
     },
-    description:{
+    description: {
         type: String
     },
     // image: {
@@ -20,28 +20,33 @@ const listingSchema = new Schema({
         url: {
             type: String,
             default: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1173&auto=format&fit=crop",
-    }},
-    
+        }
+    },
+
     price: {
         type: Number
     },
-    location:{
+    location: {
         type: String
     },
-    country:{
+    country: {
         type: String
     },
-    reviews:[{
+    reviews: [{
         type: Schema.Types.ObjectId,
         ref: "Review",
-    }]
+    }],
+    owner: {
+        type: Schema.Types.ObjectId,
+        ref: "User"
+    }
 });
 
-listingSchema.post("findOneAndDelete", async(listing)=>{
-    if(listing){
-    await Review.deleteMany({_id: {$in: listing.reviews}})
+listingSchema.post("findOneAndDelete", async (listing) => {
+    if (listing) {
+        await Review.deleteMany({ _id: { $in: listing.reviews } })
     };
-}); 
+});
 
 const Listing = mongoose.model("listing", listingSchema);
 module.exports = Listing;

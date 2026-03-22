@@ -45,19 +45,22 @@ router.get("/new", isLoggedIn, (req, res) => {
 //show route
 router.get("/:id", wrapAsync(async (req, res) => {
     let { id } = req.params;
-    const listing = await Listing.findById(id).populate("reviews");
+    const listing = await Listing.findById(id).populate("reviews").populate("owner");
     if (!listing) {
         req.flash("error", "Given listing doesn't Exist!!");
         return res.redirect("/listings");
     }
+    console.log(listing)
     res.render("listing/show.ejs", { listing });
 }));
 
 //Create route for upper new route
 router.post("/", validateListing, wrapAsync(async (req, res, next) => {    //ADD joi through validateListing
     const newListing = new Listing(req.body.listing);
+    console.log(req.user)
+    newListing.owner = req.user._id;
     await newListing.save();
-    req.flash("success", "New listing created!!")
+    req.flash("success", "New listing created!!");
     res.redirect("/listings");
 })
 );
