@@ -10,6 +10,7 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const ExpressError = require("./utils/ExpressError.js");
 const session = require("express-session");
+const MongoStore = require('connect-mongo');
 const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
@@ -20,6 +21,8 @@ const listingRouter = require("./routes/listing.js");
 const reviewsRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
 
+const dbURL = process.env.ATLASDB_URL;
+
 main().then(() => {
     console.log("Connected to DB");
 }).catch((err) => {
@@ -27,7 +30,7 @@ main().then(() => {
 });
 
 async function main() {
-    await mongoose.connect("mongodb://127.0.0.1:27017/WonderLust")
+    await mongoose.connect(dbURL)
 };
 
 app.set("view engine", "ejs");
@@ -37,7 +40,20 @@ app.use(methodOverride("_method"));
 app.engine('ejs', ejsMate);
 app.use(express.static(path.join(__dirname, "/public")));
 
+const store = MongoStore.create({
+    mongoUrl: dbURL,
+    crypto: {
+        secret: "my supersecretcode"
+    },
+    touchAfter: 24 * 3600,
+});
+
+store.on(("error"), () => {
+    console.log("Error in Mongo SESSION STORE")
+});
+
 const sessionOptions = {
+    store,
     secret: "my supersecretcode",
     resave: false,
     saveUninitialized: true,
