@@ -1,10 +1,113 @@
+<style>
+    footer {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        margin-top: 4rem;
+        padding: 3rem 0 1rem;
+    }
+
+    .footer-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        padding: 2rem 0;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .footer-section h5 {
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: white;
+    }
+
+    .footer-section p, .footer-section a {
+        color: rgba(255,255,255,0.8);
+        font-size: 0.95rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .footer-section a {
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .footer-section a:hover {
+        color: white;
+        padding-left: 0.5rem;
+    }
+
+    .footer-socials {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .footer-socials i {
+        font-size: 1.5rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .footer-socials i:hover {
+        transform: translateY(-3px);
+        opacity: 0.8;
+    }
+
+    .footer-bottom {
+        text-align: center;
+        padding: 1.5rem 0 0;
+        color: rgba(255,255,255,0.7);
+        font-size: 0.9rem;
+    }
+
+    .footer-logo {
+        font-weight: 700;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+</style>
+
 <footer>
-    <div class="f-info">
-        <div class="f-info-socials">
-            <i class="fa-brands fa-square-facebook"></i>
-            <i class="fa-brands fa-square-instagram"></i>
-            <i class="fa-brands fa-linkedin"></i>
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-logo">
+                    <i class="fa-solid fa-map"></i> WonderLust
+                </div>
+                <p>Discover amazing places and book unique accommodations around the world.</p>
+                <div class="footer-socials">
+                    <i class="fa-brands fa-facebook"></i>
+                    <i class="fa-brands fa-instagram"></i>
+                    <i class="fa-brands fa-twitter"></i>
+                    <i class="fa-brands fa-linkedin"></i>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h5>Quick Links</h5>
+                <a href="/listings"><i class="fa-solid fa-arrow-right"></i> Browse Listings</a>
+                <a href="/listings/new"><i class="fa-solid fa-arrow-right"></i> Add Listing</a>
+                <a href="/signup"><i class="fa-solid fa-arrow-right"></i> Sign Up</a>
+                <a href="/login"><i class="fa-solid fa-arrow-right"></i> Login</a>
+            </div>
+
+            <div class="footer-section">
+                <h5>Support</h5>
+                <a href="#"><i class="fa-solid fa-arrow-right"></i> Help Center</a>
+                <a href="#"><i class="fa-solid fa-arrow-right"></i> Contact Us</a>
+                <a href="#"><i class="fa-solid fa-arrow-right"></i> FAQs</a>
+                <a href="#"><i class="fa-solid fa-arrow-right"></i> Safety Tips</a>
+            </div>
+
+            <div class="footer-section">
+                <h5>Legal</h5>
+                <a href="#"><i class="fa-solid fa-arrow-right"></i> Terms of Service</a>
+                <a href="#"><i class="fa-solid fa-arrow-right"></i> Privacy Policy</a>
+                <a href="#"><i class="fa-solid fa-arrow-right"></i> Cookie Policy</a>
+            </div>
         </div>
-        <div class="f-info-brand"> &copy; Wanderlust Private Limited </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2025 WonderLust Private Limited. All rights reserved.</p>
+        </div>
     </div>
 </footer>

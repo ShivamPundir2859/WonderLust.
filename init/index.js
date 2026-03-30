@@ -1,7 +1,9 @@
+require('dotenv').config({ path: require('path').join(__dirname, '..', '.env') });
 const mongoose = require("mongoose");
 const initdata = require("./data.js");
 const Listing = require("../models/listing.js");
 
+const dbURL = process.env.ATLASDB_URL;
 
 main().then(() => {
     console.log("connected to db");
@@ -9,7 +11,11 @@ main().then(() => {
     console.log(err)
 });
 async function main() {
-    await mongoose.connect("mongodb://127.0.0.1:27017/WonderLust")
+    await mongoose.connect(dbURL, {
+        serverSelectionTimeoutMS: 60000,
+        connectTimeoutMS: 60000,
+        socketTimeoutMS: 60000,
+    })
 };
 
 const initDB = async () => {

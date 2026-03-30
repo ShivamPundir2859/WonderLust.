@@ -30,7 +30,11 @@ main().then(() => {
 });
 
 async function main() {
-    await mongoose.connect(dbURL)
+    await mongoose.connect(dbURL, {
+        serverSelectionTimeoutMS: 60000,
+        connectTimeoutMS: 60000,
+        socketTimeoutMS: 60000,
+    })
 };
 
 app.set("view engine", "ejs");
