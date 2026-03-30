@@ -1,4 +1,7 @@
 {
+  "engines": {
+    "node": "v22.20.0"
+  },
   "name": "wonderlust",
   "version": "1.0.0",
   "description": "",
